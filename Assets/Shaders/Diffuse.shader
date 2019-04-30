@@ -12,9 +12,6 @@
         CGPROGRAM
 		#pragma surface surf Standard
 
-        // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 3.0
-
         struct Input
         {
             float2 uv_MainTex;
