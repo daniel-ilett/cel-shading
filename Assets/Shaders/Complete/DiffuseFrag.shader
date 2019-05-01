@@ -1,4 +1,4 @@
-﻿Shader "CelShading/DiffuseFrag"
+﻿Shader "CelShading/Complete/DiffuseFrag"
 {
     Properties
     {
