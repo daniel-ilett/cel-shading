@@ -58,7 +58,6 @@
 				float diffuse = dot(_WorldSpaceLightPos0, normal);
 
 				fixed4 col = albedo * (diffuse * _LightColor0 + unity_AmbientSky);
-				//fixed4 col = albedo * (diffuse + _AmbientColor) * _LightColor0;
                 return col;
             }
             ENDCG
