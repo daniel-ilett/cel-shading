@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Diffuse
-  m_Shader: {fileID: 4800000, guid: 0be57050ed368fb43aaa7d4efb9e3651, type: 3}
+  m_Name: DiffuseSurf
+  m_Shader: {fileID: 4800000, guid: d6e9ec424295c644986f0c328fdb72bd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

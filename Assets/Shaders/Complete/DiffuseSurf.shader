@@ -1,4 +1,4 @@
-﻿Shader "CelShading/Complete/Diffuse"
+﻿Shader "CelShading/Complete/DiffuseSurf"
 {
     Properties
     {
@@ -17,13 +17,12 @@
         #pragma target 3.0
 
         sampler2D _MainTex;
+		fixed4 _Color;
 
         struct Input
         {
             float2 uv_MainTex;
         };
-
-        fixed4 _Color;
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
