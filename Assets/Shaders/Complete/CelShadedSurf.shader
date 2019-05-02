@@ -5,6 +5,7 @@
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Color ("Tint Color", Color) = (1,1,1,1)
 		_Antialiasing("Band Smoothing", Float) = 5.0
+		_Glossiness("Glossiness/Shininess", Float) = 400
     }
 
     SubShader
@@ -20,16 +21,24 @@
 		sampler2D _MainTex;
 		fixed4 _Color;
 		float _Antialiasing;
+		float _Glossiness;
 
-		float4 LightingCel(SurfaceOutput s, half3 lightDir, half atten)
+		float4 LightingCel(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
 		{
 			float3 normal = normalize(s.Normal);
+
 			float diffuse = dot(normal, lightDir);
 
 			float delta = fwidth(diffuse) * _Antialiasing;
 			float diffuseSmooth = smoothstep(0, delta, diffuse);
 
-			float3 col = s.Albedo * (diffuseSmooth * _LightColor0 + unity_AmbientSky);
+			float3 halfVec = normalize(lightDir + viewDir);
+			float specular = dot(normal, halfVec);
+			specular = pow(specular * diffuseSmooth, _Glossiness);
+
+			float specularSmooth = smoothstep(0, 0.01 * _Antialiasing, specular);
+
+			float3 col = s.Albedo * ((diffuseSmooth + specularSmooth) * _LightColor0 + unity_AmbientSky);
 			return float4(col, s.Alpha);
 		}
 
