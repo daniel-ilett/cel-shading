@@ -43,7 +43,7 @@
 			float specularSmooth = smoothstep(0, 0.01 * _Antialiasing, specular);
 
 			float rim = 1 - dot(normal, viewDir);
-			rim = rim * diffuseSmooth;
+			rim = rim * diffuse;
 			float fresnelSize = 1 - _Fresnel;
 
 			float rimSmooth = smoothstep(fresnelSize, fresnelSize * 1.1, rim);

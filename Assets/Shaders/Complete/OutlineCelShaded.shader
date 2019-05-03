@@ -8,11 +8,21 @@
 		_Antialiasing("Band Smoothing", Float) = 5.0
 		_Glossiness("Glossiness/Shininess", Float) = 400
 		_Fresnel("Fresnel/Rim Amount", Range(0, 1)) = 0.5
+		_OutlineSize("Outline Size", Float) = 0.01
+		_OutlineColor("Outline Color", Color) = (0, 0, 0, 1)
     }
 
     SubShader
     {
         Tags { "RenderType"="Opaque" }
+
+		Stencil
+		{
+			Ref 1
+			Comp always
+			Pass replace
+			ZFail keep
+		}
 
         CGPROGRAM
 		#pragma surface surf Cel
@@ -43,7 +53,7 @@
 			float specularSmooth = smoothstep(0, 0.01 * _Antialiasing, specular);
 
 			float rim = 1 - dot(normal, viewDir);
-			rim = rim * diffuseSmooth;
+			rim = rim * pow(diffuse, 0.3);
 			float fresnelSize = 1 - _Fresnel;
 
 			float rimSmooth = smoothstep(fresnelSize, fresnelSize * 1.1, rim);
@@ -66,6 +76,59 @@
         }
 
         ENDCG
+
+		Pass
+		{
+			Cull OFF
+			ZWrite OFF
+			ZTest ON
+			Stencil
+			{
+				Ref 1
+				Comp notequal
+				Fail keep
+				Pass replace
+			}
+
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+
+			#include "UnityCG.cginc"
+
+			float _OutlineSize;
+			float4 _OutlineColor;
+
+			struct appdata
+			{
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+			};
+
+			struct v2f 
+			{
+				float4 vertex : SV_POSITION;
+			};
+
+			v2f vert(appdata v)
+			{
+				v2f o;
+				float3 normal = normalize(v.normal);
+				float4 pos = v.vertex;
+				pos += float4(normal, 0.0) * _OutlineSize;
+
+				o.vertex = UnityObjectToClipPos(pos);
+
+				return o;
+			}
+
+			float4 frag(v2f i) : SV_Target
+			{
+				return _OutlineColor;
+			}
+
+			ENDCG
+		}
     }
 
     FallBack "Diffuse"
