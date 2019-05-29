@@ -79,7 +79,7 @@
 
 		Pass
 		{
-			Cull OFF
+			Cull Front
 			ZWrite OFF
 			ZTest ON
 			Stencil
