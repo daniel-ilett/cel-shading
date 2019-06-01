@@ -1,5 +1,7 @@
 # Cel Shading
 
+![Cel Shading Banner](banner.png)
+
 ## Overview
 This repository contains a collection of shaders used to demonstrate cel-shading in Unity. The project structure contains completed and template versions of each shader - the reader is intended to follow the [Cel Shading tutorial series](https://danielilett.com/2019-05-29-tut2-intro/) to complete the template files.
 
