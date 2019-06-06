@@ -79,7 +79,7 @@
 
 		Pass
 		{
-			Cull OFF
+			Cull Front
 			ZWrite OFF
 			ZTest ON
 			Stencil
@@ -113,9 +113,8 @@
 			v2f vert(appdata v)
 			{
 				v2f o;
-				float3 normal = normalize(v.normal);
-				float4 pos = v.vertex;
-				pos += float4(normal, 0.0) * _OutlineSize;
+				float3 normal = normalize(v.normal) * _OutlineSize;
+				float3 pos = v.vertex + normal;
 
 				o.vertex = UnityObjectToClipPos(pos);
 

@@ -55,6 +55,7 @@
 				fixed4 albedo = tex2D(_MainTex, i.uv) * _Color;
 
 				float3 normal = normalize(i.worldNormal);
+
 				float diffuse = dot(_WorldSpaceLightPos0, normal);
 
 				fixed4 col = albedo * (diffuse * _LightColor0 + unity_AmbientSky);
