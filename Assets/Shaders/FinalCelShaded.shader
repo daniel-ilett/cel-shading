@@ -1,4 +1,4 @@
-﻿Shader "CelShading/Complete/FinalCelShaded"
+﻿Shader "CelShading/FinalCelShaded"
 {
     Properties
     {
@@ -10,8 +10,6 @@
 		_Fresnel("Fresnel/Rim Amount", Range(0, 1)) = 0.5
 		_OutlineSize("Outline Size", Float) = 0.01
 		_OutlineColor("Outline Color", Color) = (0, 0, 0, 1)
-		_ID("Stencil ID", Int) = 1
-		_LightingRamp("Lighting Ramp", 2D) = "white" {}
     }
 
     SubShader
@@ -20,7 +18,7 @@
 
 		Stencil
 		{
-			Ref[_ID]
+			Ref 1
 			Comp always
 			Pass replace
 			ZFail keep
@@ -38,7 +36,6 @@
 		float _Antialiasing;
 		float _Glossiness;
 		float _Fresnel;
-		sampler2D _LightingRamp;
 
 		float4 LightingCel(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
 		{
@@ -46,7 +43,8 @@
 
 			float diffuse = dot(normal, lightDir);
 
-			float3 diffuseSmooth = tex2D(_LightingRamp, float2(diffuse * 0.5 + 0.5, 0.5));
+			float delta = fwidth(diffuse) * _Antialiasing;
+			float diffuseSmooth = smoothstep(0, delta, diffuse);
 
 			float3 halfVec = normalize(lightDir + viewDir);
 			float specular = dot(normal, halfVec);
@@ -86,7 +84,7 @@
 			ZTest ON
 			Stencil
 			{
-				Ref[_ID]
+				Ref 1
 				Comp notequal
 				Fail keep
 				Pass replace
